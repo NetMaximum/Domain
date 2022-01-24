@@ -1,4 +1,4 @@
-﻿namespace Domain
+﻿namespace NetMaximum.Domain
 {
     public abstract class EventSourcedAggregateRoot : AggregateRoot, IInternalEventHandler
     {

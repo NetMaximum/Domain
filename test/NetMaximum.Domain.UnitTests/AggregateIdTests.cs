@@ -1,9 +1,9 @@
 using System;
-using Domain.UnitTests.Examples;
+using NetMaximum.Domain.UnitTests.Examples;
 using FluentAssertions;
 using Xunit;
 
-namespace Domain.UnitTests;
+namespace NetMaximum.Domain.UnitTests;
 
 public class AggregateIdTests
 {

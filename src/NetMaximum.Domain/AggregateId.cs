@@ -1,4 +1,4 @@
-﻿namespace Domain
+﻿namespace NetMaximum.Domain
 {
     public abstract class AggregateId<T> : Value<AggregateId<T>> where T : AggregateRoot
     {

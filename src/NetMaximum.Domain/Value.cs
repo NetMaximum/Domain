@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace Domain
+namespace NetMaximum.Domain
 {
     public abstract class Value<T> where T : Value<T>
     {

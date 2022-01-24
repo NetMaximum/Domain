@@ -1,9 +1,9 @@
 using System;
-using Domain.UnitTests.Examples;
 using FluentAssertions;
+using NetMaximum.Domain.UnitTests.Examples;
 using Xunit;
 
-namespace Domain.UnitTests;
+namespace NetMaximum.Domain.UnitTests;
 
 public class AggregateRootTests
 {

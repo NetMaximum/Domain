@@ -12,9 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "support", "support", "{B051
 		.github\workflows\codeql-analysis.yml = .github\workflows\codeql-analysis.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Domain\Domain.csproj", "{F5F384E5-3F3A-474C-BCBD-B207E3ABBB0A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMaximum.Domain", "src\NetMaximum.Domain\NetMaximum.Domain.csproj", "{F5F384E5-3F3A-474C-BCBD-B207E3ABBB0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.UnitTests", "test\Domain.UnitTests\Domain.UnitTests.csproj", "{95D5BBFC-73FD-4E57-B784-5CED1AA77AC9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMaximum.Domain.UnitTests", "test\NetMaximum.Domain.UnitTests\NetMaximum.Domain.UnitTests.csproj", "{95D5BBFC-73FD-4E57-B784-5CED1AA77AC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

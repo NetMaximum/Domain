@@ -1,4 +1,4 @@
-﻿namespace Domain
+﻿namespace NetMaximum.Domain
 {
     public abstract class Entity<TId> : IInternalEventHandler where TId : Value<TId>
     {

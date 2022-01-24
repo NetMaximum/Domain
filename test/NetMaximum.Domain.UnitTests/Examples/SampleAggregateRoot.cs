@@ -1,4 +1,4 @@
-namespace Domain.UnitTests.Examples;
+namespace NetMaximum.Domain.UnitTests.Examples;
 
 public class SampleAggregateRoot : AggregateRoot
 {

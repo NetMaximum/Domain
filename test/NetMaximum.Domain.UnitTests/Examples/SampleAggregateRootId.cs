@@ -1,6 +1,6 @@
 using System;
 
-namespace Domain.UnitTests.Examples;
+namespace NetMaximum.Domain.UnitTests.Examples;
 
 public class SampleAggregateRootId : AggregateId<SampleAggregateRoot>
 {
