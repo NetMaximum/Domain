@@ -46,13 +46,11 @@ jobs:
 
       - name: Pack
         if: github.ref == 'refs/heads/main'
-        run: dotnet pack src/Domain/Domain.csproj --configuration Release --no-restore --verbosity normal --output nupkgs -p:PackageVersion=$GITVERSION_MAJORMINORPATCH
+        run: dotnet pack src/NetMaximum.Domain/NetMaximum.Domain.csproj --configuration Release --no-restore --verbosity normal --output nupkgs -p:PackageVersion=$GITVERSION_MAJORMINORPATCH
 
       - name: Pack
         if: github.event_name == 'pull_request'
-        run: dotnet pack src/Domain/Domain.csproj --configuration Release --no-restore --verbosity normal --output nupkgs -p:PackageVersion=$GITVERSION_NUGETVERSION
-
-
+        run: dotnet pack src/NetMaximum.Domain/NetMaximum.Domain.csproj --configuration Release --no-restore --verbosity normal --output nupkgs -p:PackageVersion=$GITVERSION_NUGETVERSION
 
       - name: Push
         run: dotnet nuget push nupkgs/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
@@ -60,7 +58,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: buildartifacts
-          path: ./nupkgs/
+          path: ./nupkgs/ 
 
       - name: Codecov
         uses: codecov/codecov-action@v1
