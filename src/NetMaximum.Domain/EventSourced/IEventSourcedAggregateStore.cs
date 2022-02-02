@@ -1,4 +1,4 @@
-﻿namespace NetMaximum.Domain
+﻿namespace NetMaximum.Domain.EventSourced
 {
     public interface IEventSourcedAggregateStore
     {

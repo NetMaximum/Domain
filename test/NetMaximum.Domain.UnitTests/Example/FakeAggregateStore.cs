@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
+using NetMaximum.Domain.EventSourced;
 
 namespace NetMaximum.Domain.UnitTests.Example;
 
@@ -21,13 +23,20 @@ public class FakeAggregateStore : IEventSourcedAggregateStore
 
     public Task<Optional<T>> LoadAsync<T>(AggregateId<T> aggregateId) where T : EventSourcedAggregateRoot<T>
     {
-        var aggregate = (T) Activator.CreateInstance(typeof(T), true);
+        var c= typeof(T).GetConstructor(BindingFlags.NonPublic | BindingFlags.CreateInstance | BindingFlags.Instance, 
+            null, 
+            new[] { typeof(Guid) }, 
+            null
+        );
+
+        var aggregate = (T)c.Invoke(new object[] {aggregateId.Value});
+        
         if (aggregate == null)
         {
             return Task.FromResult(Optional<T>.None);
         }
         
-        aggregate.Load(aggregateId, new List<object>());
+        aggregate.Load(new List<object>());
         return Task.FromResult(Optional<T>.Some(aggregate));
     }
 

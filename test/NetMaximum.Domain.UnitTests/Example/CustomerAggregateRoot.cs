@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using NetMaximum.Domain.EventSourced;
 using NetMaximum.Domain.UnitTests.Example.Events;
 using NetMaximum.Domain.UnitTests.Examples;
 
@@ -9,6 +9,11 @@ public class CustomerAggregateRoot : EventSourcedAggregateRoot<CustomerAggregate
 {
     public Optional<Name> Name { get; private set; } = Optional<Name>.None;
 
+    public CustomerAggregateRoot (Guid id, Name name) : base(id)
+    {
+        Apply(new CustomerCreated(name));
+    }
+    
     public void UpdateName(Name name)
     {
         Apply(new NameUpdated(name));
@@ -18,6 +23,9 @@ public class CustomerAggregateRoot : EventSourcedAggregateRoot<CustomerAggregate
     {
         switch (@event)
         {
+            case CustomerCreated customerCreated:
+                Name = Optional<Name>.Some(customerCreated.Name);
+                break;
             case NameUpdated nameUpdated:
                 Name = Optional<Name>.Some(nameUpdated.Name);
                 break;
@@ -30,26 +38,5 @@ public class CustomerAggregateRoot : EventSourcedAggregateRoot<CustomerAggregate
         {
             throw new DomainException();
         }
-    }
-
-    public CustomerAggregateRoot(Guid aggregateId, object initialEvent)
-    {
-        Apply(initialEvent);
-    }
-
-    public static CustomerAggregateRoot Create(Guid id, Name name)
-    {
-        var aggregate =  new CustomerAggregateRoot(id);
-        aggregate.Apply(new CustomerCreated(name));
-        return aggregate;
-    }
-    
-    // Todo : Add something to deal with the initial state - Customer Created Event.
-    private CustomerAggregateRoot(Guid aggregateId) : base(aggregateId)
-    {
-    }
-
-    private CustomerAggregateRoot(Guid aggregateId, IEnumerable<object> events) : base(aggregateId, events)
-    {
     }
 }

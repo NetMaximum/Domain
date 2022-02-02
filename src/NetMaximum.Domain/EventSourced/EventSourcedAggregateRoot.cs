@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace NetMaximum.Domain
+﻿namespace NetMaximum.Domain.EventSourced
 {
     public abstract class EventSourcedAggregateRoot<T> : AggregateRoot, IInternalEventHandler 
     {
@@ -27,49 +25,6 @@ namespace NetMaximum.Domain
         {
         }
         
-        protected EventSourcedAggregateRoot(Guid aggregateId, IEnumerable<object> @events) : base(aggregateId)
-        {
-            Load(aggregateId, @events);
-        }
-        
-        /// <summary>
-        /// Create a new instance of the aggregate
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        // public static T Create(Guid id)
-        // {
-        //     // Finds the ctor that accepts a Guid id.
-        //     var c= typeof(T).GetConstructor(BindingFlags.NonPublic | BindingFlags.CreateInstance | BindingFlags.Instance, 
-        //         null, 
-        //         new[] { typeof(Guid) }, 
-        //         null
-        //     );
-        //
-        //     // Todo : Add an error
-        //     
-        //     return (T)c.Invoke(new object[] {id});
-        // }
-        //
-        // /// <summary>
-        // /// Create a new instance of the aggregate, loading events (note this bypasses validation)
-        // /// </summary>
-        // /// <param name="id"></param>
-        // /// <returns></returns>
-        // public static T Create(Guid id, IEnumerable<object> @events)
-        // {
-        //     // Finds the second ctor which accepts a list of events.
-        //     var c= typeof(T).GetConstructor(BindingFlags.NonPublic | BindingFlags.CreateInstance | BindingFlags.Instance, 
-        //         null, 
-        //         new[] { typeof(Guid), typeof(IEnumerable<object>) }, 
-        //         null
-        //     );
-        //
-        //     // Todo : Add an error
-        //     
-        //     return (T)c.Invoke(new object[] {id, @events});
-        // }
-        
         void IInternalEventHandler.Handle(object @event) => When(@event);
 
         protected abstract void When(object @event);
@@ -79,6 +34,7 @@ namespace NetMaximum.Domain
             When(@event);
             EnsureValidState();
             _events.Add(@event);
+            Version++;
         }
 
         /// <summary>
@@ -91,7 +47,7 @@ namespace NetMaximum.Domain
         /// Loads the events back into the aggregate, ignoring validation until the final load.
         /// </summary>
         /// <param name="history"></param>
-        public void Load(Guid aggregateId, IEnumerable<object> history)
+        public void Load(IEnumerable<object> history)
         {
             foreach (var e in history)
             {
@@ -100,7 +56,7 @@ namespace NetMaximum.Domain
                 Version++;
             }
             
-            // EnsureValidState();
+            EnsureValidState();
             
             // Stores the loaded version, for concurrency reasons.
             LoadedVersion = Version;
@@ -113,6 +69,7 @@ namespace NetMaximum.Domain
         {
             _events.Clear();
             Version = 0;
+            LoadedVersion = 0;
         }
       
         /// <summary>

@@ -6,7 +6,6 @@ public abstract class AggregateRoot
 
     protected AggregateRoot()
     {
-        
     }
     
     protected AggregateRoot(Guid aggregateId)
