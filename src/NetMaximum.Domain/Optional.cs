@@ -2,7 +2,7 @@ namespace NetMaximum.Domain;
 
 public class Optional<T>
 {
-    public T Value { get; }
+    public T? Value { get; }
 
     public bool HasValue { get; }
 

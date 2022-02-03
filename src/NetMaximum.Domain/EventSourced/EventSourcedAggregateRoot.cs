@@ -1,6 +1,6 @@
 ﻿namespace NetMaximum.Domain.EventSourced
 {
-    public abstract class EventSourcedAggregateRoot<T> : AggregateRoot, IInternalEventHandler 
+    public abstract class EventSourcedAggregateRoot : AggregateRoot, IInternalEventHandler 
     {
         private readonly List<object> _events = new();
         
@@ -14,13 +14,7 @@
         /// </summary>
         public int LoadedVersion { get; private set; } = 0;
 
-        /// <summary>
-        /// Here to allow creation via things such as serialisation and EF.
-        /// </summary>
-        protected EventSourcedAggregateRoot() : base()
-        {
-        }
-
+        
         protected EventSourcedAggregateRoot(Guid aggregateId) : base(aggregateId)
         {
         }

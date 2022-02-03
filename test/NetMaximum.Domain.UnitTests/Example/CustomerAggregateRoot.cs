@@ -5,13 +5,18 @@ using NetMaximum.Domain.UnitTests.Examples;
 
 namespace NetMaximum.Domain.UnitTests.Example;
 
-public class CustomerAggregateRoot : EventSourcedAggregateRoot<CustomerAggregateRoot>
+public class CustomerAggregateRoot : EventSourcedAggregateRoot
 {
     public Optional<Name> Name { get; private set; } = Optional<Name>.None;
 
     public CustomerAggregateRoot (Guid id, Name name) : base(id)
     {
         Apply(new CustomerCreated(name));
+    }
+
+    protected CustomerAggregateRoot(Guid id) : base(id)
+    {
+        
     }
     
     public void UpdateName(Name name)
