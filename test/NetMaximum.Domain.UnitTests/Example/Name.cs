@@ -16,6 +16,4 @@ public class Name : Value<Name>
     {
         return new Name(firstName, surname);
     }
-
-    public override string ToString() => $"{this.FirstName} {this.Surname}";
 }
