@@ -105,8 +105,8 @@ public class EventSourcedAggregateRootTests
         
         // Assert
         sut.Name.HasValue.Should().BeTrue();
-        sut.Name.Value.FirstName.Should().Be("Chriss");
-        sut.Name.Value.Surname.Should().Be("Barnard");
+        sut.Name.Value!.FirstName.Should().Be("Chriss");
+        sut.Name.Value!.Surname.Should().Be("Barnard");
     }
 
     private CustomerAggregateRoot CreateSut(Guid id)

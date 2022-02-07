@@ -28,7 +28,8 @@ public abstract class EventSourcedRepository
         if (!results.HasValue) return Optional<T>.None;
         
         var c= typeof(T).GetConstructor(
-            BindingFlags.NonPublic | 
+            BindingFlags.NonPublic |
+            BindingFlags.Public |
             BindingFlags.Instance,
             null, 
             new[] { typeof(Guid) }, 
