@@ -9,12 +9,12 @@ public class CustomerAggregateRoot : EventSourcedAggregateRoot
 {
     public Optional<Name> Name { get; private set; } = Optional<Name>.None;
 
-    public CustomerAggregateRoot (Guid id, Name name) : base(id)
+    public CustomerAggregateRoot (string id, Name name) : base(id)
     {
         Apply(new CustomerCreated(name));
     }
 
-    protected CustomerAggregateRoot(Guid id) : base(id)
+    protected CustomerAggregateRoot(string id) : base(id)
     {
         
     }

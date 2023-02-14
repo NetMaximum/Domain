@@ -1,6 +1,6 @@
 ﻿namespace NetMaximum.Domain.EventSourced
 {
-    public abstract class EventSourcedAggregateRoot : AggregateRoot, IInternalEventHandler 
+    public abstract class EventSourcedAggregateRoot : AggregateRoot 
     {
         private readonly List<object> _events = new();
         
@@ -15,12 +15,10 @@
         public int LoadedVersion { get; private set; } = 0;
 
         
-        protected EventSourcedAggregateRoot(Guid aggregateId) : base(aggregateId)
+        protected EventSourcedAggregateRoot(string aggregateId) : base(aggregateId)
         {
         }
         
-        void IInternalEventHandler.Handle(object @event) => When(@event);
-
         protected abstract void When(object @event);
 
         protected void Apply(object @event)
@@ -36,6 +34,15 @@
         /// </summary>
         /// <returns></returns>
         public IEnumerable<object> GetEvents() => _events.AsReadOnly();
+
+        /// <summary>
+        /// Gets a enumerable of events that have been applied to the aggregate but not persisted.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<object> GetUncommittedEvents()
+        {
+            return _events.Skip(LoadedVersion).ToList().AsReadOnly();
+        }
 
         /// <summary>
         /// Loads the events back into the aggregate, ignoring validation until the final load.
@@ -71,6 +78,6 @@
         /// </summary>
         protected abstract void EnsureValidState();
 
-        protected void ApplyToEntity(IInternalEventHandler entity, object @event) => entity?.Handle(@event);
+        // protected void ApplyToEntity(IInternalEventHandler entity, object @event) => entity?.Handle(@event);
     }
 }

@@ -1,8 +1,9 @@
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 
 namespace NetMaximum.Domain.EventSourced;
 
-public abstract class EventSourcedRepository
+public abstract class EventSourcedRepository<T> where T : EventSourcedAggregateRoot
 {
     private readonly IEventSourcedAggregateStore _store;
 
@@ -11,27 +12,28 @@ public abstract class EventSourcedRepository
         _store = store;
     }
     
-    public virtual Task<bool> ExistsAsync<T>(AggregateId<T> aggregateId) where T : EventSourcedAggregateRoot
+    public virtual Task<bool> ExistsAsync(AggregateId<T> aggregateId) //where T : EventSourcedAggregateRoot
     {
         return _store.ExistsAsync(aggregateId);
     }
 
-    public Task SaveAsync<T>(T aggregate) where T : EventSourcedAggregateRoot
+    public Task SaveAsync(T aggregate) //where T : EventSourcedAggregateRoot
     {
         return _store.SaveAsync(aggregate);
     }
 
-    public virtual async Task<Optional<T>> LoadAsync<T>(AggregateId<T> aggregateId) where T : EventSourcedAggregateRoot
+    public virtual async Task<Optional<T>> LoadAsync(AggregateId<T> aggregateId) //where T : EventSourcedAggregateRoot
     {
         
         var results = await _store.LoadAsync(aggregateId);
         if (!results.HasValue) return Optional<T>.None;
         
         var c= typeof(T).GetConstructor(
-            BindingFlags.NonPublic | 
+            BindingFlags.NonPublic |
+            BindingFlags.Public |
             BindingFlags.Instance,
             null, 
-            new[] { typeof(Guid) }, 
+            new[] { typeof(string) }, 
             null
         );
         
@@ -40,7 +42,7 @@ public abstract class EventSourcedRepository
         return Optional<T>.Some(aggregate);
     }
 
-    public virtual Task DeleteAsync<T>(AggregateId<T> aggregateId) where T : EventSourcedAggregateRoot
+    public virtual Task DeleteAsync(AggregateId<T> aggregateId) //where T : EventSourcedAggregateRoot
     {
         return _store.DeleteAsync(aggregateId);
     }
