@@ -39,9 +39,5 @@ public class CustomerAggregateRoot : EventSourcedAggregateRoot
 
     protected override void EnsureValidState()
     {
-        if (!this.Name.HasValue)
-        {
-            throw new DomainException();
-        }
     }
 }

@@ -52,10 +52,30 @@ public class EventSourcedRepositoryTests
     }
     
     [Fact]
-    public async Task When_an_aggregate_load_happens_on_known_id_an_optional_of_some_is_returned()
+    public async Task When_an_aggregate_has_a_non_public_ctor_its_correctly_created()
     {
         // Arrange
         var id = new SampleAggregateRootId(Guid.NewGuid().ToString());
+        var aggStore = new Mock<IEventSourcedAggregateStore>();
+        aggStore.Setup(x => x.LoadAsync(id)).ReturnsAsync(Optional<IEnumerable<object>>.Some(new List<object>() {new CustomerCreated(Name.FromString("Test", "Surname"))}));
+        
+        var sut = new FakeAggregateStore(aggStore.Object);
+        
+        // Act
+        var result = await sut.LoadAsync(id);
+        
+        // Assert
+        result.HasValue.Should().BeTrue();
+        aggStore.Verify(x => x.LoadAsync(id), Times.Once);
+        result.Value!.LoadedVersion.Should().Be(1);
+        result.Value!.Version.Should().Be(1);
+    }
+    
+    [Fact]
+    public async Task When_an_aggregate_has_a_public_ctor_its_correctly_created()
+    {
+        // Arrange
+        var id = new PublicCTORAggregateRootId(Guid.NewGuid());
         var aggStore = new Mock<IEventSourcedAggregateStore>();
         aggStore.Setup(x => x.LoadAsync(id)).ReturnsAsync(Optional<IEnumerable<object>>.Some(new List<object>() {new CustomerCreated(Name.FromString("Test", "Surname"))}));
         
