@@ -13,7 +13,7 @@ public class AggregateIdTests
         // Arrange - Act
         var sut = new Action(() =>
         {
-            var _ = new SampleAggregateRootId(Guid.Empty);
+            var _ = new SampleAggregateRootId(string.Empty);
         });
         
         // Assert
@@ -24,32 +24,32 @@ public class AggregateIdTests
     public void Id_is_correct()
     {
         // Arrange - Act
-        var id = Guid.NewGuid();
+        var id = Guid.NewGuid().ToString();
         var subject = new SampleAggregateRootId(id);
 
         // Assert
         subject.Value.Should().Be(id);
     }
     
-    [Fact]
-    public void Implicitly_converts_to_guid()
-    {
-        // Arrange 
-        var id = Guid.NewGuid();
-        var subject = new SampleAggregateRootId(id);
-
-        // Act
-        Guid result = subject;
-
-        // Assert
-        result.Should().Be(id);
-    }
+    // [Fact]
+    // public void Implicitly_converts_to_guid()
+    // {
+    //     // Arrange 
+    //     var id = Guid.NewGuid().ToString();
+    //     var subject = new SampleAggregateRootId(id);
+    //
+    //     // Act
+    //     Guid result = subject;
+    //
+    //     // Assert
+    //     result.Should().Be(id);
+    // }
 
     [Fact]
     public void ToString_correctly_implemented_to_return_id_as_string()
     {
         // Arrange 
-        var id = Guid.NewGuid();
+        var id = Guid.NewGuid().ToString();
         var subject = new SampleAggregateRootId(id);
 
         // Act

@@ -5,7 +5,7 @@ namespace NetMaximum.Domain.UnitTests.Examples;
 
 public class PublicCTORAggregateRootId : AggregateId<PublicCTORCustomerAggregateRoot>
 {
-    public PublicCTORAggregateRootId(Guid value) : base(value)
+    public PublicCTORAggregateRootId(string value) : base(value)
     {
     }
 }

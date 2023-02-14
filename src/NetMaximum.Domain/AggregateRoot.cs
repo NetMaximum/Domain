@@ -4,14 +4,14 @@ namespace NetMaximum.Domain;
 
 public abstract class AggregateRoot
 {
-    public Guid Id { get; protected set; }
+    public string Id { get; protected set; }
 
     [ExcludeFromCodeCoverage]
     protected AggregateRoot()
     {
     }
     
-    protected AggregateRoot(Guid aggregateId)
+    protected AggregateRoot(string aggregateId)
     {
         Id = aggregateId;
     }

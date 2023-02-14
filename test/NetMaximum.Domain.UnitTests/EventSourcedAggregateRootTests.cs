@@ -14,7 +14,7 @@ public class EventSourcedAggregateRootTests
     public void Can_create_event_sourced_aggregate_root()
     {
         // Arrange - Act
-        var id = Guid.NewGuid();
+        var id = Guid.NewGuid().ToString();
         var sut = new CustomerAggregateRoot(new SampleAggregateRootId(id), Name.FromString("Test","Name"));
         
         // // Assert
@@ -26,7 +26,7 @@ public class EventSourcedAggregateRootTests
     public void Can_create_event_sourced_aggregate_root_with_events()
     {
         // Arrange - Act
-        var id = Guid.NewGuid();
+        var id = Guid.NewGuid().ToString();
         var sut = CreateSut(id);
         
         // // Assert
@@ -39,7 +39,7 @@ public class EventSourcedAggregateRootTests
     public void Clearing_events_should_also_reset_the_version()
     {
         // Arrange
-        var id = Guid.NewGuid();
+        var id = Guid.NewGuid().ToString();
         var sut = CreateSut(id);
         
         sut.Should().NotBeNull();
@@ -59,7 +59,7 @@ public class EventSourcedAggregateRootTests
     public void After_a_series_of_events_has_been_loaded_calling_reset_should_also_clear_the_loaded_version()
     {
         // Arrange
-        var id = Guid.NewGuid();
+        var id = Guid.NewGuid().ToString();
         var sut = CreateSut(id);
         
         sut.Load(new List<object>() {new object()});
@@ -81,7 +81,7 @@ public class EventSourcedAggregateRootTests
     public void Loading_a_series_of_events_should_store_the_version_the_aggregate_was_loaded_at()
     {
         // Arrange
-        var id = Guid.NewGuid();
+        var id = Guid.NewGuid().ToString();
         var sut = CreateSut(id);
         
         sut.Load(new List<object>() {new object()});
@@ -97,7 +97,7 @@ public class EventSourcedAggregateRootTests
     public void Applying_a_name_update_is_correctly_applied_to_the_aggregate()
     {
         // Arrange
-        var id = Guid.NewGuid();
+        var id = Guid.NewGuid().ToString();
         var sut = CreateSut(id);
         
         // Act
@@ -109,7 +109,7 @@ public class EventSourcedAggregateRootTests
         sut.Name.Value!.Surname.Should().Be("Barnard");
     }
 
-    private CustomerAggregateRoot CreateSut(Guid id)
+    private CustomerAggregateRoot CreateSut(string id)
     {
         return new CustomerAggregateRoot(new SampleAggregateRootId(id), Name.FromString("Test","Name"));
     }

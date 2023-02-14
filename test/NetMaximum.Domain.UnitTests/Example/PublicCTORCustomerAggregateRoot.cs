@@ -7,7 +7,7 @@ namespace NetMaximum.Domain.UnitTests.Example;
 
 public class PublicCTORCustomerAggregateRoot : EventSourcedAggregateRoot
 {
-    public PublicCTORCustomerAggregateRoot(Guid id) : base(id)
+    public PublicCTORCustomerAggregateRoot(string id) : base(id)
     {
     }
     

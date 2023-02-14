@@ -11,7 +11,7 @@ public class AggregateRootTests
     public void Default_id_is_correct()
     {
         // Arrange
-        var id = Guid.NewGuid();
+        var id = Guid.NewGuid().ToString();
         var sut = new SampleAggregateRoot(new SampleAggregateRootId(id));
         
         // Assert

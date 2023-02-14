@@ -19,11 +19,11 @@ public class EventSourcedRepositoryTests
     public async Task Aggregate_exists(bool exists)
     {
         // Arrange
-        var id = new SampleAggregateRootId(Guid.NewGuid());
+        var id = new SampleAggregateRootId(Guid.NewGuid().ToString());
         var aggStore = new Mock<IEventSourcedAggregateStore>();
         aggStore.Setup(x => x.ExistsAsync(id)).ReturnsAsync(exists);
         
-        var sut = new FakeAggregateStore(aggStore.Object);
+        var sut = new FakeCustomerAggregateStore(aggStore.Object);
         
         // Act
         var result = await sut.ExistsAsync(id);
@@ -37,11 +37,11 @@ public class EventSourcedRepositoryTests
     public async Task When_an_aggregate_load_happens_on_unknown_id_an_optional_of_none_is_returned()
     {
         // Arrange
-        var id = new SampleAggregateRootId(Guid.NewGuid());
+        var id = new SampleAggregateRootId(Guid.NewGuid().ToString());
         var aggStore = new Mock<IEventSourcedAggregateStore>();
         aggStore.Setup(x => x.LoadAsync(id)).ReturnsAsync(Optional<IEnumerable<object>>.None);
         
-        var sut = new FakeAggregateStore(aggStore.Object);
+        var sut = new FakeCustomerAggregateStore(aggStore.Object);
         
         // Act
         var result = await sut.LoadAsync(id);
@@ -55,11 +55,11 @@ public class EventSourcedRepositoryTests
     public async Task When_an_aggregate_has_a_non_public_ctor_its_correctly_created()
     {
         // Arrange
-        var id = new SampleAggregateRootId(Guid.NewGuid());
+        var id = new SampleAggregateRootId(Guid.NewGuid().ToString());
         var aggStore = new Mock<IEventSourcedAggregateStore>();
         aggStore.Setup(x => x.LoadAsync(id)).ReturnsAsync(Optional<IEnumerable<object>>.Some(new List<object>() {new CustomerCreated(Name.FromString("Test", "Surname"))}));
         
-        var sut = new FakeAggregateStore(aggStore.Object);
+        var sut = new FakeCustomerAggregateStore(aggStore.Object);
         
         // Act
         var result = await sut.LoadAsync(id);
@@ -75,11 +75,11 @@ public class EventSourcedRepositoryTests
     public async Task When_an_aggregate_has_a_public_ctor_its_correctly_created()
     {
         // Arrange
-        var id = new PublicCTORAggregateRootId(Guid.NewGuid());
+        var id = new PublicCTORAggregateRootId(Guid.NewGuid().ToString());
         var aggStore = new Mock<IEventSourcedAggregateStore>();
         aggStore.Setup(x => x.LoadAsync(id)).ReturnsAsync(Optional<IEnumerable<object>>.Some(new List<object>() {new CustomerCreated(Name.FromString("Test", "Surname"))}));
         
-        var sut = new FakeAggregateStore(aggStore.Object);
+        var sut = new FakePublicCtorAggregateStore(aggStore.Object);
         
         // Act
         var result = await sut.LoadAsync(id);
@@ -95,10 +95,10 @@ public class EventSourcedRepositoryTests
     public async Task An_aggregate_save_is_delegated_to_the_store_interface()
     {
         // Arrange
-        var aggregate = new CustomerAggregateRoot(Guid.NewGuid(), Name.FromString("firstName", "surname"));
+        var aggregate = new CustomerAggregateRoot(Guid.NewGuid().ToString(), Name.FromString("firstName", "surname"));
         
         var aggStore = new Mock<IEventSourcedAggregateStore>();
-        var sut = new FakeAggregateStore(aggStore.Object);
+        var sut = new FakeCustomerAggregateStore(aggStore.Object);
         
         // Act
         await sut.SaveAsync(aggregate);
@@ -111,9 +111,9 @@ public class EventSourcedRepositoryTests
     public async Task An_aggregate_delete_is_delegated_to_the_store_interface()
     {
         // Arrange
-        var id = new SampleAggregateRootId(Guid.NewGuid());
+        var id = new SampleAggregateRootId(Guid.NewGuid().ToString());
         var aggStore = new Mock<IEventSourcedAggregateStore>();
-        var sut = new FakeAggregateStore(aggStore.Object);
+        var sut = new FakeCustomerAggregateStore(aggStore.Object);
         // Act
         
         await sut.DeleteAsync(id);
@@ -122,9 +122,16 @@ public class EventSourcedRepositoryTests
         aggStore.Verify(x => x.DeleteAsync(id), Times.Once);
     }
     
-    private class FakeAggregateStore : EventSourcedRepository
+    private class FakePublicCtorAggregateStore : EventSourcedRepository<PublicCTORCustomerAggregateRoot>
     {
-        public FakeAggregateStore(IEventSourcedAggregateStore store) : base(store)
+        public FakePublicCtorAggregateStore(IEventSourcedAggregateStore store) : base(store)
+        {
+        }
+    }
+    
+    private class FakeCustomerAggregateStore : EventSourcedRepository<CustomerAggregateRoot>
+    {
+        public FakeCustomerAggregateStore(IEventSourcedAggregateStore store) : base(store)
         {
         }
     }

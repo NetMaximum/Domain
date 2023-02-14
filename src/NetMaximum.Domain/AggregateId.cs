@@ -1,10 +1,14 @@
 ﻿namespace NetMaximum.Domain
 {
-    public abstract class AggregateId<T> : Value<AggregateId<T>> where T : AggregateRoot
+    public abstract class AggregateId{
+    
+    }
+    
+    public abstract class AggregateId<T> : AggregateId where T : AggregateRoot
     {
-        protected AggregateId(Guid value)
+        protected AggregateId(string value)
         {
-            if (value == default)
+            if (string.IsNullOrEmpty(value))
                 throw new ArgumentNullException(
                     nameof(value), 
                     "The Id cannot be empty");
@@ -12,9 +16,9 @@
             Value = value;
         }
 
-        public Guid Value { get; }
+        public string Value { get; }
         
-        public static implicit operator Guid(AggregateId<T> self) => self.Value;
+        public static implicit operator string(AggregateId<T> self) => self.Value;
 
         public override string ToString() => Value.ToString();
     }
